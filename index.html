@@ -1,0 +1,50 @@
+<!DOCTYPE html5>
+<html>
+  <head>
+    <title>Excel to Markdown converter</title>
+
+    <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+    <script src="https://jquery-csv.googlecode.com/files/jquery.csv-0.71.min.js"></script>
+
+    <script>
+      $(document).ready(function() {
+        $('#run').bind('click', function() {
+          parse();
+        });
+      });
+      function parse() {
+        var input = $('#input').val();
+        var data = $.csv.toArrays(input, {separator: "\t"});
+        var result = $('#result')
+        result.val("");
+        $.each(data, function(lineIndex, line) {
+          line = $.map(line, function(element) {
+            return element.trim();
+          });
+          result.val(result.val() + "|" + line.join("|") + "|\n");
+        });
+      }
+    </script>
+
+    <style>
+      textarea { height: 300px; width: 400px; }
+    </style>
+  </head>
+
+
+  <body>
+    <h1>Excel to Markdown converter</h1>
+
+    <h3>Instructions:</h3>
+    <ol>
+      <li>Copy some cells from Excel</li>
+      <li>Paste into the first box</li>
+      <li>Press the 'Convert' button</li>
+      <li>Paste the resulting markdown table into Jira</li>
+    </ol>
+
+    <textarea id="input"></textarea>
+    <button id="run">Convert</button>
+    <textarea id="result"></textarea>
+  </body>
+</html>
